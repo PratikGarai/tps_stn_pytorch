@@ -44,7 +44,7 @@ total = 0
 N = 10
 for data_batch, target_batch in test_loader:
     for data, target in zip(data_batch, target_batch):
-        data_list = target2data_list[target].data
+        data_list = target2data_list[target.item()]
         if len(data_list) < N:
             data_list.append(data)
             total += 1
@@ -60,7 +60,7 @@ frames_list = [[] for _ in range(batch_size)]
 paths = sorted(glob.glob('checkpoint/%s_angle%d_grid%d/*.pth' % (
     args.model, args.angle, args.grid_size,
 )))[::-1]
-font = ImageFont.truetype('Comic Sans MS.ttf', 20)
+
 for pi, path in enumerate(paths): # path index
     print('path %d/%d: %s' % (pi, len(paths), path))
     model.load_state_dict(torch.load(path))
@@ -94,5 +94,5 @@ for pi, path in enumerate(paths): # path index
                 if k > 0: # connect to up
                     x2, y2 = source_points[j, k - 1]
                     draw.line((x1, y1, x2, y2), fill = (255, 0, 0))
-        draw.text((10, 0), 'sample %03d, iter %03d' % (si, len(paths) - 1 - pi), fill = (255, 0, 0), font = font)
+        draw.text((10, 0), 'sample %03d, iter %03d' % (si, len(paths) - 1 - pi), fill = (255, 0, 0))
         canvas.save(image_dir + 'sample%03d_iter%03d.png' % (si, len(paths) - 1 - pi))
