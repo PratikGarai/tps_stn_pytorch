@@ -44,7 +44,7 @@ total = 0
 N = 10
 for data_batch, target_batch in test_loader:
     for data, target in zip(data_batch, target_batch):
-        data_list = target2data_list[target]
+        data_list = target2data_list[target].data
         if len(data_list) < N:
             data_list.append(data)
             total += 1
